@@ -41,9 +41,8 @@ public class Add_Drug extends javax.swing.JFrame {
         initComponents();
         datechooser = new JDateChooser();
         panel.add(datechooser);
-        File file = new File("drugs.txt");
         drugName.addItem("Start typing...");
-        for (int i = 0; i < drugNameList.size(); i++) {
+        for(int i = 0; i < drugNameList.size(); i++) {
             drugOptions.add((String) drugNameList.get(i));
         }
         Collections.sort(drugOptions);

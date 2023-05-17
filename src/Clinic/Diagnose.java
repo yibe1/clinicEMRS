@@ -54,7 +54,7 @@ public class Diagnose extends javax.swing.JFrame {
         this.student_id = student_id;
         this.dm = dm;
         
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < dxlist.size(); i++) {
                 diag.addItem(dxlist.get(i));
         }
                
