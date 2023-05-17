@@ -880,4 +880,24 @@ public class Repo {
         return list;
     }
 
+    ArrayList<String> getDxList() throws SQLException {
+    ArrayList<String> data = new ArrayList<>();
+        try {
+            conn = (Connection) DriverManager.getConnection("jdbc:mysql://" + ip + ":3306/" + dbname, user, sec);
+            stmt = (Statement) conn.createStatement();
+            String st = "select * from icd11dx";
+            ResultSet rs = stmt.executeQuery(st);
+
+            while (rs.next()) {
+                data.add(rs.getString("Category"));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Repo.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            conn.close();
+        }
+        return data;
+    }
+
 }

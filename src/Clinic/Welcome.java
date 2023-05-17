@@ -204,13 +204,25 @@ public class Welcome extends javax.swing.JFrame {
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
         login.setText("Loding...");
-        getStarted();
+        try {
+            getStarted();
+        } catch (SocketException ex) {
+            Logger.getLogger(Welcome.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadLocationException ex) {
+            Logger.getLogger(Welcome.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_loginActionPerformed
 
     private void loginKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_loginKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            getStarted();
+            try {
+                getStarted();
+            } catch (SocketException ex) {
+                Logger.getLogger(Welcome.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (BadLocationException ex) {
+                Logger.getLogger(Welcome.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_loginKeyPressed
 
@@ -218,8 +230,10 @@ public class Welcome extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             try {
-                login();
+                getStarted();
             } catch (BadLocationException ex) {
+                Logger.getLogger(Welcome.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SocketException ex) {
                 Logger.getLogger(Welcome.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -280,58 +294,66 @@ public class Welcome extends javax.swing.JFrame {
     private javax.swing.JPasswordField pass;
     private javax.swing.JTextField uname;
     // End of variables declaration//GEN-END:variables
-public void getStarted(){
-    try {
-            File file = new File("ip.txt");
-            if (!file.exists()) {
-                try {
-                    file.createNewFile();
-                } catch (IOException ex) {
-                }
-            }
+public void getStarted() throws SocketException, BadLocationException {
 
+        File file = new File("ip.txt");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+                BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+                bw.write("0.0.0.1");
+                bw.close();
+            } catch (IOException ex) {
+                new Warnings("Unable to create ip file", this);
+            }
+        } 
             try {
                 br = new BufferedReader(new FileReader(file));
                 ip = br.readLine();
+                br.close();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Welcome.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
             }
-                if (new HandShake().shake(ip)) {
-                    System.out.println("Connection success at welcome with exiting ip");
+            System.out.println("here.............1..."+ip);
+            int i =1;
+            while(ip==null){
+                System.out.println("ip is null i = "+i);
+                i++;
+            }
+            if (new HandShake().shake(ip)) {
+                System.out.println("Connection success at welcome with exiting ip");
+                success = true;
+                
+            } else {
+                try {
+                    ip = new Client().grabIp();
+                    System.out.println("connected with new Ip = " + ip);
                     success = true;
-                } else {
-                    try {
-                        ip = new Client().grabIp();
-                        System.out.println("connected with new Ip = " + ip);
-                        success = true;
+                   
 
-                    } catch (Exception ex) {
-                        Logger.getLogger(Welcome.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(Welcome.class.getName()).log(Level.SEVERE, null, ex);
 
-                        ip = JOptionPane.showInputDialog("Unable to get Ip. Enter IP");
+                    ip = JOptionPane.showInputDialog("Unable to get Ip. Enter IP");
 
-                    }
-                    try {
-                        FileWriter fr = new FileWriter(file);
-                        BufferedWriter br = new BufferedWriter(fr);
-                        br.write(ip);
-                        br.close();
-                        success = true;
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(Welcome.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IOException ex) {
-                        Logger.getLogger(Welcome.class.getName()).log(Level.SEVERE, null, ex);
-                    }
                 }
-            login();
-        } catch (BadLocationException ex) {
-            Logger.getLogger(Welcome.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SocketException ex) {
-            Logger.getLogger(Welcome.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                try {
+                    FileWriter fr = new FileWriter(file);
+                    BufferedWriter br = new BufferedWriter(fr);
+                    br.write(ip);
+                    br.close();
+                    success = true;
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(Welcome.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(Welcome.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
 
-}
+        login();
+    }
+
     public void login() throws BadLocationException {
         // TODO add your handling code here:
         String roll, tempPassword, decPassword = null;

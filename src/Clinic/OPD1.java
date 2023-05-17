@@ -11,6 +11,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -805,6 +806,8 @@ public class OPD1 extends javax.swing.JFrame {
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Error code Dx1 " + ex);
             Logger.getLogger(Diagnose.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(OPD1.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_button_diagnosesActionPerformed

@@ -38,7 +38,7 @@ public class Diagnose extends javax.swing.JFrame {
      *
      * @throws java.io.FileNotFoundException
      */
-    public Diagnose(String student_id, OPD1 opd, Dimer dm) throws FileNotFoundException, IOException {
+    public Diagnose(String student_id, OPD1 opd, Dimer dm) throws FileNotFoundException, IOException, SQLException {
         initComponents();
         opd.setEnabled(false);
         this.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -50,34 +50,16 @@ public class Diagnose extends javax.swing.JFrame {
                 
             }
         });
-        ArrayList<String> chapterlist = new ArrayList<>();
+        ArrayList<String> dxlist = new Repo().getDxList();
         this.student_id = student_id;
         this.dm = dm;
-        File file = new File("icd11.txt");
-        FileReader fr = new FileReader(file);
-        try (BufferedReader br = new BufferedReader(fr)) {
-            diag.addItem("Start writing......");
-            while (br.ready()) {
-                String temp = br.readLine();
-                diag.addItem(temp.replace("-", "").trim());
-                wholelist.add(temp);
-                if (temp.charAt(0) == '-') {
-                } else {
-                    diag.addItem(temp);
-                    System.out.println(temp);
-                }
-            }
-            //main.setModel((ListModel<String>) chapterlist);
-//      Vector<String> diagnoses_options = new Repo().getDiagnoses();
-//      main1.setEnabled(false);
-//      main2.setEnabled(false);
-//      main3.setEnabled(false);
-//      main4.setEnabled(false);
-//      main5.setEnabled(false);
-//      main6.setEnabled(false);
-//      main7.setEnabled(false);
-//      main8.setEnabled(false);
+        
+        for (int i = 0; i < 10; i++) {
+                diag.addItem(dxlist.get(i));
         }
+               
+            
+
         this.opd = opd;
         AutoCompleteDecorator.decorate(diag);
     }
