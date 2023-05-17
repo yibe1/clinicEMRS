@@ -1,0 +1,2 @@
+Clinic.load_waiting_patients
+Clinic.Display
