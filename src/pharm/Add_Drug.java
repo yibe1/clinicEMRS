@@ -36,28 +36,19 @@ public class Add_Drug extends javax.swing.JFrame {
     private final JDateChooser datechooser;
     
     public Add_Drug(String usr) {
+        ArrayList drugNameList = new Bridge().getDrugNames();
         this.usr = usr;
         initComponents();
         datechooser = new JDateChooser();
         panel.add(datechooser);
         File file = new File("drugs.txt");
-        try {
-            FileReader fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr);
-            drugName.addItem("Start typing...");
-            
-            while (br.ready()) {
-                String drug = br.readLine();
-                drugOptions.add(drug);
-            }
-            Collections.sort(drugOptions);
-            for (int i = 0; i < drugOptions.size(); i++) {
-                drugName.addItem(drugOptions.get(i));
-            }
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Add_Drug.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Add_Drug.class.getName()).log(Level.SEVERE, null, ex);
+        drugName.addItem("Start typing...");
+        for (int i = 0; i < drugNameList.size(); i++) {
+            drugOptions.add((String) drugNameList.get(i));
+        }
+        Collections.sort(drugOptions);
+        for (int i = 0; i < drugOptions.size(); i++) {
+            drugName.addItem(drugOptions.get(i));
         }
         
         AutoCompleteDecorator.decorate(drugName);

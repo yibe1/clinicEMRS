@@ -591,7 +591,7 @@ public class Bridge {
             Connection conn = DriverManager.getConnection("jdbc:mysql://" + ip + ":3306/" + dbname, user, sec);
             stmt = conn.createStatement();
             String sql = "INSERT INTO `dispensary_drugs`(`Req_no`, `drug_name`, `unit`, `quantity`, `unit_price`,`batch_number`,`expiry_date`, `transaction_date`,`mrn_for_offline`) VALUES "
-                    + "('" + -1 + "','" + prescription.getDrug_name() + "','" + prescription.getUnit() + "'," + prescription.getQty() * -1 + "," + prescription.getUnitPrice() + ",'" + prescription.getBatchN() + "','" + prescription.getExpiry_date() + "',NOW(),'"+prescription.getStudent_id()+"')";
+                    + "('" + -1 + "','" + prescription.getDrug_name() + "','" + prescription.getUnit() + "'," + prescription.getQty() * -1 + "," + prescription.getUnitPrice() + ",'" + prescription.getBatchN() + "','" + prescription.getExpiry_date() + "',NOW(),'" + prescription.getStudent_id() + "')";
 
             stmt.executeUpdate(sql);
         } catch (SQLException ex) {
@@ -607,10 +607,10 @@ public class Bridge {
 
     public boolean removeOfflinePrescription(Prescription rx) {
         boolean status = true;
-         try (Connection conn = DriverManager.getConnection("jdbc:mysql://" + ip + ":3306/" + dbname, user, sec)) {
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://" + ip + ":3306/" + dbname, user, sec)) {
             stmt = conn.createStatement();
-            String sql = "DELETE FROM `dispensary_drugs` where drug_name = '" +rx.getDrug_name()+"' and transaction_date = NOW() and mrn_for_offline = '"+rx.getStudent_id()+"'";
-             System.out.println(sql);
+            String sql = "DELETE FROM `dispensary_drugs` where drug_name = '" + rx.getDrug_name() + "' and transaction_date = NOW() and mrn_for_offline = '" + rx.getStudent_id() + "'";
+            System.out.println(sql);
             stmt.executeUpdate(sql);
 
             stmt.close();
@@ -618,7 +618,24 @@ public class Bridge {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        } 
+        }
         return status;
-   }
+    }
+
+    public ArrayList getDrugNames() {
+        ArrayList<String> list = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://" + ip + ":3306/" + dbname, user, sec)) {
+            stmt = conn.createStatement();
+            String s = "Select * from drug_list";
+            ResultSet rs = stmt.executeQuery(s);
+            int x = 0;
+            while (rs.next()) {
+                list.add(rs.getString("DrugNameWithStrength"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }
