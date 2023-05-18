@@ -142,7 +142,13 @@ public class pp extends javax.swing.JPanel {
         }
         call.setText("Calling..");
         try {
-            opd.call(stid);
+            if(opd.lock == 0){
+              
+            }else{
+                opd.call(stid);  
+                opd.lock = 1;
+            }
+            
         } catch (SQLException ex) {
             Logger.getLogger(pp.class.getName()).log(Level.SEVERE, null, ex);
         }

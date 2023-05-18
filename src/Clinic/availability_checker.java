@@ -135,6 +135,7 @@ public class availability_checker extends javax.swing.JFrame {
 //        p.call.setText("Calling..");
         try {
             opd.call(stid);
+            opd.lock = 0;
         } catch (SQLException ex) {
             Logger.getLogger(pp.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -176,6 +177,7 @@ public class availability_checker extends javax.swing.JFrame {
         }
 
         opd.setEnabled(true);
+        opd.lock = 0;
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 

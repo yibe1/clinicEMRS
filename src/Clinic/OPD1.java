@@ -62,6 +62,7 @@ public class OPD1 extends javax.swing.JFrame {
     private Clip clip;
     private int alarmdelay = 60000;
     private boolean waiting_pts;
+    int lock = 0;// to prevent un intended double calling of patients for waiting area. when the arived button is clicked lock will be 0 and dr can call next
 
     public void setReferalVist(boolean x) {
         referal_visit = x;
@@ -1176,11 +1177,11 @@ public class OPD1 extends javax.swing.JFrame {
     }
 
     public Patient getPatient(String id) {
-
+        
         Patient patient = new Repo().getPatient(id);
         return patient;
     }
-
+    
     public void updateHistory(int st) throws SQLException {
 //        System.out.println("here..............1245");
         patient_diagnoses.setStudent_id(student_id.getText());
@@ -1192,11 +1193,6 @@ public class OPD1 extends javax.swing.JFrame {
         repo.updateHistory(student_id.getText(), subj.getText(), obj.getText(), ass.getText(), plan.getText(), drName, sqlDate.toString(), st);
 //        System.out.println(".......///.......");
         repo.changeStatus(id, userId, room, pt_status);
-//        System.out.println("here..............22222222222");
-//        repo.saveLab(labTest);
-//        repo.saveDx(patient_diagnoses.getDiagnoses(),student_id.getText());
-//        repo.savePrescription(prescriptions);
-//        System.out.println("here..............1245........3333");
     }
 
     private void clear() {

@@ -25,9 +25,9 @@ public class New_Register extends javax.swing.JFrame {
         this.id = id;
         this.rg = rg;
         this.dm = dm;
-        fname.setText(first_name);
-        mname.setText(middle_name);
-        lname.setText(last_name);
+        fname.setText(first_name.trim());
+        mname.setText(middle_name.trim());
+        lname.setText(last_name.trim());
         sexField.setSelectedItem(sex.trim());
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
